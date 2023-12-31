@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Background from './Background';
 import Container from './Container';
 import Footer from './Footer';
@@ -12,19 +12,13 @@ import ResultsCount from './ResultsCount';
 import JobList from './JobList';
 import PaginationControls from './PaginationControls';
 import SortingControls from './SortingControls';
-import { useActiveId, useJobItems } from '../lib/hooks';
-import { BASE_API_URL } from '../lib/constants';
+import { useActiveId, useJobItem, useJobItems } from '../lib/hooks';
 
 function App() {
   const [searchText, setSearchText] = useState('');
   const [jobItems, isLoading] = useJobItems(searchText);
   const activeId = useActiveId();
-
-  useEffect(() => {
-    if (!activeId) return;
-
-    fetch(`${BASE_API_URL}/${activeId}`);
-  }, [activeId]);
+  const jobItem = useJobItem(activeId);
 
   return (
     <>
