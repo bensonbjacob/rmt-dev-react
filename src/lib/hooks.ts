@@ -34,7 +34,7 @@ export function useActiveId() {
 }
 
 export function useJobItem(id: number | null) {
-  const { data, isLoading } = useQuery(
+  const { data, isInitialLoading } = useQuery(
     ['job-item', id],
     () => (id ? fetchJobItem(id) : null),
     {
@@ -46,6 +46,7 @@ export function useJobItem(id: number | null) {
     }
   );
   const jobItem = data?.jobItem;
+  const isLoading = isInitialLoading;
   return { jobItem, isLoading } as const;
 }
 
