@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
-import { JobItem, JobItemExpanded } from './types';
+import { JobItem } from './types';
 import { BASE_API_URL } from './constants';
+import { useQuery } from '@tanstack/react-query';
 
 export function useActiveId() {
   const [activeID, setActiveID] = useState<number | null>(null);
@@ -20,24 +21,22 @@ export function useActiveId() {
 }
 
 export function useJobItem(id: number | null) {
-  const [jobItem, setJobItem] = useState<JobItemExpanded | null>(
-    null
-  );
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    if (!id) return;
-    const fetchData = async () => {
-      setIsLoading(true);
+  const { data, isLoading } = useQuery(
+    ['job-item', id],
+    async () => {
       const response = await fetch(`${BASE_API_URL}/${id}`);
       const data = await response.json();
-      setIsLoading(false);
-      setJobItem(data.jobItem);
-    };
-
-    fetchData();
-  }, [id]);
-
+      return data;
+    },
+    {
+      staleTime: 1000 * 60 * 5,
+      refetchOnWindowFocus: false,
+      retry: false,
+      enabled: !!id,
+      onError: () => {},
+    }
+  );
+  const jobItem = data.jobItem;
   return { jobItem, isLoading } as const;
 }
 
