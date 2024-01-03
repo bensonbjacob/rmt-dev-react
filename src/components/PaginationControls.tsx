@@ -11,11 +11,13 @@ export default function PaginationControls({
 }: PaginationControlsProps) {
   return (
     <section className='pagination'>
-      <PaginationButton
-        direction='previous'
-        currentPage={currentPage}
-        onClick={() => onClick('previous')}
-      />
+      {currentPage > 1 && (
+        <PaginationButton
+          direction='previous'
+          currentPage={currentPage}
+          onClick={() => onClick('previous')}
+        />
+      )}
       <PaginationButton
         direction='next'
         currentPage={currentPage}
@@ -37,13 +39,16 @@ function PaginationButton({
   onClick,
 }: PaginationButtonProps) {
   return (
-    <button onClick={onClick} className='pagination__button'>
-      {direction === 'previous' ? (
+    <button
+      onClick={onClick}
+      className={`pagination__button pagination__button--${direction}`}>
+      {direction === 'previous' && (
         <>
           <ArrowLeftIcon />
           Page {currentPage - 1}
         </>
-      ) : (
+      )}
+      {direction === 'next' && (
         <>
           Page {currentPage + 1}
           <ArrowRightIcon />
