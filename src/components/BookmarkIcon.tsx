@@ -14,7 +14,11 @@ export default function BookmarkIcon({ id }: BookmarkIconProps) {
     <button
       onClick={() => handleToggleBookmark(id)}
       className='bookmark-btn'>
-      <BookmarkFilledIcon className='' />
+      <BookmarkFilledIcon
+        className={`
+        ${bookmarkedIds.includes(id) ? 'filled' : ''}
+      `}
+      />
     </button>
   );
 }
