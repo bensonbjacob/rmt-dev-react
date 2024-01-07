@@ -1,6 +1,5 @@
 import { BookmarkFilledIcon } from '@radix-ui/react-icons';
-import { useContext } from 'react';
-import { BookmarksContext } from '../contexts/BookmarksContextProvider';
+import { useBookmarksContext } from '../lib/hooks';
 
 type BookmarkIconProps = {
   id: number;
@@ -8,7 +7,7 @@ type BookmarkIconProps = {
 
 export default function BookmarkIcon({ id }: BookmarkIconProps) {
   const { bookmarkedIds, handleToggleBookmark } =
-    useContext(BookmarksContext);
+    useBookmarksContext();
 
   return (
     <button
