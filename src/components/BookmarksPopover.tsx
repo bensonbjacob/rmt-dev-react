@@ -6,7 +6,7 @@ export default function BookmarksPopover() {
 
   return (
     <div className='bookmarks-popover'>
-      <JobList jobItems={bookmarkedJobItems} isLoading={false} />
+      <JobList jobItems={bookmarkedJobItems} isLoading={isLoading} />
     </div>
   );
 }
