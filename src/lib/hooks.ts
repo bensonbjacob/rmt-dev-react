@@ -4,6 +4,7 @@ import { JobItem, JobItemExpanded } from './types';
 import { BASE_API_URL } from './constants';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import { handleError } from './utils';
+import { ActiveIdContext } from '../contexts/ActiveIdContextProvider';
 
 type JobItemApiResponse = {
   public: boolean;
@@ -150,17 +151,6 @@ export function useLocalStorage<T>(
   return [value, setValue] as const;
 }
 
-export function useBookmarksContext() {
-  const context = useContext(BookmarksContext);
-  if (!context) {
-    throw new Error(
-      'useContext(BookmarksContext) must be used within a BookmarksContextProvider'
-    );
-  }
-
-  return context;
-}
-
 export function useOnClickOutside(
   refs: React.RefObject<HTMLElement>[],
   handler: () => void
@@ -180,4 +170,26 @@ export function useOnClickOutside(
       document.removeEventListener('click', handleClick);
     };
   }, [refs, handler]);
+}
+
+export function useBookmarksContext() {
+  const context = useContext(BookmarksContext);
+  if (!context) {
+    throw new Error(
+      'useContext(BookmarksContext) must be used within a BookmarksContextProvider'
+    );
+  }
+
+  return context;
+}
+
+export function useActiveIdContext() {
+  const context = useContext(ActiveIdContext);
+  if (!context) {
+    throw new Error(
+      'useActiveIdContext must be used within a ActiveIdContextProvider'
+    );
+  }
+
+  return context;
 }
