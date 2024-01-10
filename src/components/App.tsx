@@ -12,15 +12,14 @@ import ResultsCount from './ResultsCount';
 import JobList from './JobList';
 import PaginationControls from './PaginationControls';
 import SortingControls from './SortingControls';
-import { useDebounce, useSearchQuery } from '../lib/hooks';
+import { useSearchQuery } from '../lib/hooks';
 import { Toaster } from 'react-hot-toast';
 import { RESULTS_PER_PAGE } from '../lib/constants';
 import { PageDirection, SortBy } from '../lib/types';
 
 function App() {
   // state
-  const [searchText, setSearchText] = useState('');
-  const debouncedSearchText = useDebounce(searchText, 250);
+
   const { jobItems, isLoading } = useSearchQuery(debouncedSearchText);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<SortBy>('relevant');
@@ -43,6 +42,7 @@ function App() {
   );
 
   // event handlers
+
   const handleChangePage = (direction: PageDirection) => {
     if (direction === 'next') {
       setCurrentPage((prev) => prev + 1);
@@ -66,10 +66,7 @@ function App() {
           <BookmarksButton />
         </HeaderTop>
 
-        <SearchForm
-          searchText={searchText}
-          setSearchText={setSearchText}
-        />
+        <SearchForm />
       </Header>
 
       <Container>
