@@ -1,12 +1,12 @@
-import { BookmarksContext } from './../contexts/BookmarksContextProvider';
-import React, { useState, useEffect, useContext } from 'react';
-import { JobItem, JobItemExpanded } from './types';
-import { BASE_API_URL } from './constants';
-import { useQueries, useQuery } from '@tanstack/react-query';
-import { handleError } from './utils';
-import { ActiveIdContext } from '../contexts/ActiveIdContextProvider';
-import { SearchTextContext } from '../contexts/SearchTextContextProvider';
-import { JobItemsContext } from '../contexts/JobItemsContextProvider';
+import { BookmarksContext } from "./../contexts/BookmarksContextProvider";
+import React, { useState, useEffect, useContext } from "react";
+import { JobItem, JobItemExpanded } from "./types";
+import { BASE_API_URL } from "./constants";
+import { useQueries, useQuery } from "@tanstack/react-query";
+import { handleError } from "./utils";
+import { ActiveIdContext } from "../contexts/ActiveIdContextProvider";
+import { SearchTextContext } from "../contexts/SearchTextContextProvider";
+import { JobItemsContext } from "../contexts/JobItemsContextProvider";
 
 type JobItemApiResponse = {
   public: boolean;
@@ -34,9 +34,9 @@ export function useActiveId() {
       setActiveID(id);
     };
     handleHashChange();
-    window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener("hashchange", handleHashChange);
     return () =>
-      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener("hashchange", handleHashChange);
   }, []);
 
   return activeID;
@@ -44,7 +44,7 @@ export function useActiveId() {
 
 export function useJobItem(id: number | null) {
   const { data, isInitialLoading } = useQuery(
-    ['job-item', id],
+    ["job-item", id],
     () => (id ? fetchJobItem(id) : null),
     {
       staleTime: 1000 * 60 * 5,
@@ -62,7 +62,7 @@ export function useJobItem(id: number | null) {
 export function useJobItems(ids: number[]) {
   const results = useQueries({
     queries: ids.map((id) => ({
-      queryKey: ['job-item', id],
+      queryKey: ["job-item", id],
       queryFn: () => fetchJobItem(id),
       staleTime: 1000 * 60 * 5,
       refetchOnWindowFocus: false,
@@ -103,7 +103,7 @@ const fetchJobItems = async (
 
 export function useSearchQuery(searchText: string) {
   const { data, isInitialLoading } = useQuery(
-    ['job-items', searchText],
+    ["job-items", searchText],
     () => fetchJobItems(searchText),
     {
       staleTime: 1000 * 60 * 5,
@@ -140,11 +140,12 @@ export function useLocalStorage<T>(
   key: string,
   initialValue: T
 ): [T, React.Dispatch<React.SetStateAction<T>>] {
-  const [value, setValue] = useState(() =>
-    JSON.parse(
-      localStorage.getItem(key) || JSON.stringify(initialValue)
-    )
-  );
+  const [value, setValue] = useState<T>(() => {
+    const storedValue = localStorage.getItem(key);
+    return storedValue
+      ? (JSON.parse(storedValue) as T)
+      : initialValue;
+  });
 
   useEffect(() => {
     localStorage.setItem(key, JSON.stringify(value));
@@ -166,10 +167,10 @@ export function useOnClickOutside(
       }
     };
 
-    document.addEventListener('click', handleClick);
+    document.addEventListener("click", handleClick);
 
     return () => {
-      document.removeEventListener('click', handleClick);
+      document.removeEventListener("click", handleClick);
     };
   }, [refs, handler]);
 }
@@ -178,7 +179,7 @@ export function useBookmarksContext() {
   const context = useContext(BookmarksContext);
   if (!context) {
     throw new Error(
-      'useContext(BookmarksContext) must be used within a BookmarksContextProvider'
+      "useContext(BookmarksContext) must be used within a BookmarksContextProvider"
     );
   }
 
@@ -189,7 +190,7 @@ export function useActiveIdContext() {
   const context = useContext(ActiveIdContext);
   if (!context) {
     throw new Error(
-      'useActiveIdContext must be used within a ActiveIdContextProvider'
+      "useActiveIdContext must be used within a ActiveIdContextProvider"
     );
   }
 
@@ -200,7 +201,7 @@ export function useSearchTextContext() {
   const context = useContext(SearchTextContext);
   if (!context) {
     throw new Error(
-      'useSearchTextContext must be used within a SearchTextContextProvider'
+      "useSearchTextContext must be used within a SearchTextContextProvider"
     );
   }
 
@@ -211,7 +212,7 @@ export function useJobItemsContext() {
   const context = useContext(JobItemsContext);
   if (!context) {
     throw new Error(
-      'useJobItemsContext must be used within a JobItemsContextProvider'
+      "useJobItemsContext must be used within a JobItemsContextProvider"
     );
   }
 
